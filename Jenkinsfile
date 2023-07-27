@@ -8,7 +8,6 @@ pipeline {
                     image 'python:2-alpine'
                 }
             }
-<<<<<<< HEAD
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
                 stash(name: 'compiled-results', includes: 'sources/*.py*')
@@ -27,16 +26,10 @@ pipeline {
                 always {
                     junit 'test-reports/results.xml' 
                 }
-=======
-            finally {
-                junit 'test-reports/results.xml'
-                //test
->>>>>>> 51e91aee2c24a6e98ba0cca606c707c00a879437
             }
         }
     }
 }
-<<<<<<< HEAD
 // node {
 //     stage('Build') {
 //         docker.image('python:2-alpine').inside {
@@ -80,5 +73,3 @@ pipeline {
 //             }
 //         }
 // }
-=======
->>>>>>> 51e91aee2c24a6e98ba0cca606c707c00a879437
