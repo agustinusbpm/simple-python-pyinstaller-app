@@ -22,7 +22,7 @@ node {
     stage('Deploy') {
         //Deploy Di Local
         dir(path: env.BUILD_ID) {
-        unstash(name: 'compiled-results')
+        unstash(name: 'compiled-results'){
             // docker.image('cdrx/pyinstaller-linux:python2').inside('-v /submission-python/sources:/src', "--entrypoint=''") {
             sh "docker run --rm -v /submission-python/sources:/src --entrypoint='' cdrx/pyinstaller-linux:python2 'pyinstaller -F add2vals.py'" 
             // sh 'pyinstaller -F add2vals.py'
@@ -36,7 +36,7 @@ node {
     //         sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
     //         }
     //     }  
-    // }
+    }
 //DECLARATIVE PIPELINE EXAMPLE
 // pipeline {
 //     agent none
