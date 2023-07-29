@@ -16,7 +16,6 @@ node {
             }
         }
     }
-    def 
     stage('Deploy') {
         //Deploy Di Local
         dir(path: env.BUILD_ID) {
