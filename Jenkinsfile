@@ -20,7 +20,7 @@ node {
         //Deploy Di Local
         dir(path: env.BUILD_ID) {
         unstash(name: 'compiled-results')
-            docker.image('cdrx/pyinstaller-linux:python2').inside(-v '$(pwd)/sources:/src') {
+            docker.image('cdrx/pyinstaller-linux:python2').inside(-v $(pwd)/sources:/src) {
                 sh 'pyinstaller -F add2vals.py'
             // unstash(name: 'compiled-results') 
             // sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
