@@ -27,7 +27,7 @@ node {
             unstash(name: 'compiled-results')
             docker.image(${IMAGE}).inside(${VOLUME}) {
            // sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
-            // sh 'pyinstaller -F add2vals.py'
+            sh 'pyinstaller -F add2vals.py'
             // unstash(name: 'compiled-results') 
             }
         }
