@@ -29,8 +29,10 @@ node {
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
                 }
         }
-        success {
-            sh "echo 'Deploy Success'"        
+        finally {
+            success {
+                sh "echo 'Deploy Success'"        
+                }
             }
         }
     }
