@@ -16,6 +16,9 @@ node {
             }
         }
     }
+    stage('Manual Approval') {
+        input message: 'Lanjutkan ke tahap Deploy?'
+    }
     stage('Deploy') {
         //Deploy Di Local
         dir(path: env.BUILD_ID) {
