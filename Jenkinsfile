@@ -20,12 +20,13 @@ node {
     //     input message: 'Lanjutkan ke tahap Deploy?'
     // }
     stage('Deploy') {
-        sh "echo '$env.BUILD_ID'"
+        def VOLUME = '$(pwd)/sources:/src'
+        def IMAGE = 'cdrx/pyinstaller-linux:python2'
         //Deploy Di Local
         dir(path: env.BUILD_ID) {
             unstash(name: 'compiled-results')
             // docker.image('cdrx/pyinstaller-linux:python2').inside('-v /submission-python/sources:/src', "--entrypoint=''") {
-            sh "docker run --rm -v /submission-python/sources:/src --entrypoint='' cdrx/pyinstaller-linux:python2 'pyinstaller -F add2vals.py'" 
+            sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
             // sh 'pyinstaller -F add2vals.py'
             // unstash(name: 'compiled-results') 
             }
