@@ -25,7 +25,7 @@ node {
         //Deploy Di Local
         dir(path: env.BUILD_ID) {
             unstash(name: 'compiled-results')
-            docker.image(IMAGE).inside('-v ' + {VOLUME} + '') {
+            docker.image(IMAGE).inside("-v " + {VOLUME} + " --entrypoint=''") {
            // sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
             sh 'pyinstaller -F add2vals.py'
             // unstash(name: 'compiled-results') 
