@@ -36,7 +36,7 @@ node {
     //         sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
     //         }
     //     }  
-    }
+    // }
 //DECLARATIVE PIPELINE EXAMPLE
 // pipeline {
 //     agent none
