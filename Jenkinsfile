@@ -32,6 +32,9 @@ node {
                 sh "echo 'Deploy Success'"        
                 }
             }
+        finally {
+            sh "echo 'Deploy hehehe'"
+        }
         }
     }
 
