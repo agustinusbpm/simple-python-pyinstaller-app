@@ -25,13 +25,14 @@ node {
         //Deploy Di Local
         dir(path: env.BUILD_ID) {
             unstash(name: 'compiled-results')
-            // docker.image('cdrx/pyinstaller-linux:python2').inside('-v /submission-python/sources:/src', "--entrypoint=''") {
-            sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
+            docker.image(${IMAGE}).inside(${VOLUME}) {
+           // sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
             // sh 'pyinstaller -F add2vals.py'
             // unstash(name: 'compiled-results') 
             }
         }
     }
+}
     // post {
     //     success {
     //         archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals" 
