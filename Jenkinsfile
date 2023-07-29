@@ -28,8 +28,6 @@ node {
                 unstash(name: 'compiled-results')            
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
                 }
-        }
-        finally {
             success {
                 sh "echo 'Deploy Success'"        
                 }
