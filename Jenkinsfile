@@ -6,7 +6,8 @@ node {
             stash(name: 'compiled-results', includes: 'sources/*.py*')
         }
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-            docker.build('$USERNAME/python:2-alpine', '.')
+            // docker.build('$USERNAME/python:2-alpine', '.')
+            docker.build('$USERNAME/submission-my-docker-app:latest', '.')
         }    
     }
     stage('Test') {
