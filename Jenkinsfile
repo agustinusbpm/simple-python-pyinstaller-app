@@ -7,7 +7,7 @@ node {
         }
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // docker.build('$USERNAME/python:2-alpine', '.')
-            dir(path: env.BUILD_ID + '/sources') {
+            dir(path: env.BUILD_ID + '/sources/') {
                 unstash(name: 'compiled-results')
                 sh 'pwd'
                 sh 'ls'
