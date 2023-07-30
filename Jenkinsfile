@@ -10,8 +10,8 @@ node {
             unstash(name: 'compiled-results')
             docker.build('bagaspm12/submission-python-app:latest', '.')
             // Push Ke Docker Hub
-            sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-            sh 'docker push bagaspm12/submission-python-app:latest' 
+            // sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+            // sh 'docker push bagaspm12/submission-python-app:latest' 
         }    
     }
     stage('Test') {
