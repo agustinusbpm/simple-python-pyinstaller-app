@@ -7,9 +7,11 @@ node {
         }
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // docker.build('$USERNAME/python:2-alpine', '.')
+            dir(path: env.BUILD_ID/sources) {
             unstash(name: 'compiled-results')
             sh 'pwd'
             sh 'ls'
+            }
             // docker.build('bagaspm12/submission-python-app:latest', '.')
             // Push Ke Docker Hub
             // sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
