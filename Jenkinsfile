@@ -5,6 +5,9 @@ node {
             sh 'python -m py_compile sources/add2vals.py sources/calc.py'
             stash(name: 'compiled-results', includes: 'sources/*.py*')
         }
+        withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+            docker.build('$USERNAME/python:2-alpine', '.')
+        }    
     }
     stage('Test') {
         docker.image('qnib/pytest').inside {
