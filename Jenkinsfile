@@ -39,8 +39,8 @@ node {
             // }
             // Deploy Di AWS EC2
             withCredentials([sshUserPrivateKey(credentialsId: 'ec2-key', keyFileVariable: 'PRIVATE', usernameVariable: 'USER')]) {
-                sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 mkdir -p /submission-python-app/$env.BUILD_ID'
-                sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 ls /submission-python-app'
+                sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 mkdir -p /home/$USER/submission-python-app/$env.BUILD_ID'
+                sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 ls /home/$USER/submission-python-app'
                 // sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker pull bagaspm12/submission-python-app'
                 // sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker stop submission-python-app'
                 //sh "ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
