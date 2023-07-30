@@ -29,12 +29,11 @@ node {
                 unstash(name: 'compiled-results')            
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
                 }
-
         }
         catch(Exception e) {
             echo 'Something failed, I should sound the klaxons!'
             deploySuccess = false            
-            throw
+            throw e
         }
         finally {
             if (deploySuccess) {
