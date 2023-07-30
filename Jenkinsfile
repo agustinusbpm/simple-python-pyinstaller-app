@@ -26,10 +26,10 @@ node {
         //Deploy Di Local
         try {
             dir(path: env.BUILD_ID) {
-                unstash(name: 'compiled-results')            
+                // unstash(name: 'compiled-results')            
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-key', keyFileVariable: 'PRIVATE', usernameVariable: 'USER')]) {
-                    sh "ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                    // sh "ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
                 }
             }
         }
