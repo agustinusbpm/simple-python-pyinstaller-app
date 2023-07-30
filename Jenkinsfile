@@ -12,8 +12,8 @@ node {
                 sh 'pwd'
                 sh 'ls'
                 sh 'ls sources'
-                docker.build('bagaspm12/submission-python-app:latest', '.')
             }
+            docker.build('bagaspm12/submission-python-app:latest', '--build-arg --build-arg BUILD_ID=${env.BUILD_ID} .')
             // Push Ke Docker Hub
             // sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
             // sh 'docker push bagaspm12/submission-python-app:latest' 
