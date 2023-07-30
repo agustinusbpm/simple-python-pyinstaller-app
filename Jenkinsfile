@@ -31,13 +31,14 @@ node {
                 }
         }
         catch(Exception e) {
-            echo 'Something failed, I should sound the klaxons!'
+            echo e.getMessage()
             deploySuccess = false            
             throw e
         }
         finally {
             if (deploySuccess) {
-                sh "echo 'Deployed'"
+                archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals" 
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 }
             }
         }
