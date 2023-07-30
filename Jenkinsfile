@@ -8,7 +8,7 @@ node {
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // docker.build('$USERNAME/python:2-alpine', '.')
             unstash(name: 'compiled-results')
-            docker.build('bagaspm12/python-app:latest', '.')
+            docker.build('bagaspm12/submission-python-app:latest', '.')
         }    
     }
     // stage('Test') {
