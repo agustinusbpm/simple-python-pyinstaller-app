@@ -22,19 +22,25 @@ node {
     stage('Deploy') {
         def VOLUME = '$(pwd)/sources:/src'
         def IMAGE = 'cdrx/pyinstaller-linux:python2'
+        def deploySuccess = true
         //Deploy Di Local
         try {
             dir(path: env.BUILD_ID) {
                 unstash(name: 'compiled-results')            
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
                 }
-            success {
-                sh "echo 'Deploy Success'"        
+
+        }
+        catch(Exception e) {
+            echo 'Something failed, I should sound the klaxons!'
+            deploySuccess = false            
+            throw
+        }
+        finally {
+            if (deploySuccess) {
+                sh "echo 'Deployed'"
                 }
             }
-        finally {
-            sh "echo 'Deploy hehehe'"
-        }
         }
     }
 
