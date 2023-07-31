@@ -38,11 +38,14 @@ node {
             //     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
             // }
             // Deploy Di AWS EC2
-            withCredentials([sshUserPrivateKey(credentialsId: 'ec2-key', keyFileVariable: 'PRIVATE', usernameVariable: 'USER')]) {
-                sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 mkdir -p /home/$USER/submission-python-app/' + env.BUILD_ID + ''
-                // sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker pull bagaspm12/submission-python-app'
+            sshagent(['ec2-key']) {
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68'
+                // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''
+                // unstash(name: 'compiled-results')
+                sh 'whoami'
+                sh 'pwd'
                 // sh 'ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker stop submission-python-app'
-                //sh "ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                //sh "ssh -i $PRIVATE -o StrictHostKeyChecking=no $USER@54.179.63.68 docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"       
             }
         }
         catch(Exception e) {
@@ -53,6 +56,7 @@ node {
         finally {
             if (deploySuccess) {
                 // archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+                archiveArtifacts
                 // // Delay Selama 1 Menit
                 // sleep(time: 1, unit: 'MINUTES') 
                 // sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
