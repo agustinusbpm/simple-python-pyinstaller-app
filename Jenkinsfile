@@ -42,6 +42,7 @@ node {
             // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68'
                 sh '''
                     ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68
+                    pwd
                     ls
                     
                 '''
