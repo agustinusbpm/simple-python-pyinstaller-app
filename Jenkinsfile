@@ -39,7 +39,12 @@ node {
             // }
             // Deploy Di AWS EC2
             sshagent(['ec2-key']) {
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68'
+            // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68'
+                sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68
+                    ls
+                    
+                '''
                 // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''
                 // unstash(name: 'compiled-results')
                 sh 'whoami'
