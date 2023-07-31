@@ -9,7 +9,6 @@ node {
         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             unstash(name: 'compiled-results')
             docker.build('bagaspm12/submission-python-app:latest', '.')
-            sh 'rm -rf sources'
             // Push Ke Docker Hub
             sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
             sh 'docker push bagaspm12/submission-python-app:latest' 
