@@ -33,10 +33,10 @@ node {
         def deploySuccess = true
         try {
             //Deploy Di Local
-            dir(path: env.BUILD_ID) {
-                unstash(name: 'compiled-results')            
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
-            }
+            // dir(path: env.BUILD_ID) {
+            //     unstash(name: 'compiled-results')            
+            //     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
+            // }
             // Deploy Di AWS EC2
             sshagent(['ec2-key']) {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
