@@ -31,6 +31,7 @@ node {
         def VOLUME = '$(pwd)/sources:/src'
         def IMAGE = 'cdrx/pyinstaller-linux:python2'
         def deploySuccess = true
+        def commandAWS = "docker run --rm bagaspm12/submission-python-app 'pyinstaller -F add2vals.py'"
         try {
             // Deploy Di Local
             dir(path: env.BUILD_ID) {
@@ -43,9 +44,8 @@ node {
             sshagent(['ec2-key']) {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'
-                // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm -v /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/:/src/dist bagaspm12/submission-python-app 'pyinstaller -F add2vals.py''    
-                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app 'ls -lah'"       
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app ' + ''pyinstaller -F add2vals.py''    
+                // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm -v /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/:/src/dist bagaspm12/submission-python-app 'pyinstaller -F add2vals.py''     
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 ' + commandAWS    
             }
         }
         catch(Exception e) {
