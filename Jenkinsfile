@@ -36,7 +36,7 @@ node {
             dir(path: env.BUILD_ID) {
                 unstash(name: 'compiled-results')
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pwd'"
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls'"              
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls -lah'"              
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
             }
             // Deploy Di AWS EC2
@@ -44,6 +44,7 @@ node {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'
                 // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm -v /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/:/src/dist bagaspm12/submission-python-app 'pyinstaller -F add2vals.py''    
+                sh "ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app 'ls -lah'"       
                 sh "ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app 'pyinstaller -F add2vals.py'"    
             }
         }
