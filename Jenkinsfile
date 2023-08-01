@@ -1,10 +1,10 @@
 node {
     checkout scm
-    // stage('Build') {
-    //     docker.image('python:2-alpine').inside {
-    //         sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-    //         stash(name: 'compiled-results', includes: 'sources/*.py*')
-    //     }
+    stage('Build') {
+        docker.image('python:2-alpine').inside {
+            sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+            stash(name: 'compiled-results', includes: 'sources/*.py*')
+        }
     //     // Build Docker Image Untuk Deploy Di AWS
     //     withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
     //         unstash(name: 'compiled-results')
@@ -13,7 +13,7 @@ node {
     //         sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
     //         sh 'docker push bagaspm12/submission-python-app:latest' 
     //     }    
-    // }
+    }
     // stage('Test') {
     //     docker.image('qnib/pytest').inside {
     //         try {
@@ -32,12 +32,14 @@ node {
         def IMAGE = 'cdrx/pyinstaller-linux:python2'
         def deploySuccess = true
         try {
-            //Deploy Di Local
-            // dir(path: env.BUILD_ID) {
-            //     unstash(name: 'compiled-results')            
-            //     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
-            // }
-            // Deploy Di AWS EC2
+            Deploy Di Local
+            dir(path: env.BUILD_ID) {
+                unstash(name: 'compiled-results')
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pwd'"
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls'"              
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
+            }
+            Deploy Di AWS EC2
             sshagent(['ec2-key']) {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'
