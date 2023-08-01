@@ -11,7 +11,7 @@ node {
             docker.build('bagaspm12/submission-python-app:latest', '.')
             // Push Ke Docker Hub
             sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-            sh 'docker push bagaspm12/submission-python-app:latest' 
+            // sh 'docker push bagaspm12/submission-python-app:latest' 
         }    
     }
     // stage('Test') {
@@ -27,43 +27,43 @@ node {
     // // stage('Manual Approval') {
     // //     input message: 'Lanjutkan ke tahap Deploy?'
     // // }
-    stage('Deploy') {
-        def VOLUME = '$(pwd)/sources:/src'
-        def IMAGE = 'cdrx/pyinstaller-linux:python2'
-        def deploySuccess = true
-        def commandAWS = "docker run --rm bagaspm12/submission-python-app 'pyinstaller -F add2vals.py'"
-        try {
-            // Deploy Di Local
-            dir(path: env.BUILD_ID) {
-                unstash(name: 'compiled-results')
-                sh 'whoami'
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pwd'"
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls -lah'"              
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
-            }
-            // Deploy Di AWS EC2
-            sshagent(['ec2-key']) {
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'
-                // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm -v /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/:/src/dist bagaspm12/submission-python-app 'pyinstaller -F add2vals.py''     
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app'
-            }
-        }
-        catch(Exception e) {
-            echo e.getMessage()
-            deploySuccess = false            
-            throw e
-        }
-        finally {
-            if (deploySuccess) {
-                archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                // Delay Selama 1 Menit
-                sleep(time: 1, unit: 'MINUTES') 
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-                sh 'echo "Deploy Success"'
-                }
-            }
-        }
+    // stage('Deploy') {
+    //     def VOLUME = '$(pwd)/sources:/src'
+    //     def IMAGE = 'cdrx/pyinstaller-linux:python2'
+    //     def deploySuccess = true
+    //     def commandAWS = "docker run --rm bagaspm12/submission-python-app 'pyinstaller -F add2vals.py'"
+    //     try {
+    //         // Deploy Di Local
+    //         dir(path: env.BUILD_ID) {
+    //             unstash(name: 'compiled-results')
+    //             sh 'whoami'
+    //             sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pwd'"
+    //             sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls -lah'"              
+    //             sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
+    //         }
+    //         // Deploy Di AWS EC2
+    //         sshagent(['ec2-key']) {
+    //             sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
+    //             sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'
+    //             // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm -v /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/:/src/dist bagaspm12/submission-python-app 'pyinstaller -F add2vals.py''     
+    //             sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app'
+    //         }
+    //     }
+    //     catch(Exception e) {
+    //         echo e.getMessage()
+    //         deploySuccess = false            
+    //         throw e
+    //     }
+    //     finally {
+    //         if (deploySuccess) {
+    //             archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+    //             // Delay Selama 1 Menit
+    //             sleep(time: 1, unit: 'MINUTES') 
+    //             sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
+    //             sh 'echo "Deploy Success"'
+    //             }
+    //         }
+    //     }
     }
 
     // post {
