@@ -1,4 +1,4 @@
 FROM cdrx/pyinstaller-linux:python2
-COPY ./sources /src
+COPY sources /src
 WORKDIR /src
-CMD ["pyinstaller","-F","add2vals.py"]
+# CMD ["pyinstaller","-F","add2vals.py"]
