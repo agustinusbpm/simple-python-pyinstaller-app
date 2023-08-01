@@ -39,7 +39,7 @@ node {
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls'"              
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
             }
-            Deploy Di AWS EC2
+            // Deploy Di AWS EC2
             sshagent(['ec2-key']) {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'
