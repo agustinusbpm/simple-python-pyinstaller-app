@@ -35,16 +35,13 @@ node {
         try {
             // Deploy Di Local
             dir(path: env.BUILD_ID) {
-                unstash(name: 'compiled-results')
-                sh 'whoami'
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pwd'"
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls -lah'"              
+                unstash(name: 'compiled-results')             
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
             }
             // Deploy Di AWS EC2
             sshagent(['ec2-key']) {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
-                // sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 docker rmi bagaspm12/submission-python-app:latest'  
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 docker rmi bagaspm12/submission-python-app:latest'  
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 docker pull bagaspm12/submission-python-app:latest'  
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 docker run --rm -v /home/ubuntu/submission-python-app/' + env.BUILD_ID + ':/src/dist bagaspm12/submission-python-app'
             }
@@ -56,7 +53,13 @@ node {
         }
         finally {
             if (deploySuccess) {
+                // Membuat Artifact Di Local
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+                // Menjalankan Aplikasi Di AWS EC2
+                sshagent(['ec2-key']) {  
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 chmod a+x /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/add2vals'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/add2vals 20 7'
+                }
                 // Delay Selama 1 Menit
                 sleep(time: 1, unit: 'MINUTES') 
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
