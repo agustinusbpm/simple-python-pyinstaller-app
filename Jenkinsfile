@@ -36,6 +36,7 @@ node {
             // Deploy Di Local
             dir(path: env.BUILD_ID) {
                 unstash(name: 'compiled-results')
+                sh 'whoami'
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pwd'"
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'ls -lah'"              
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
