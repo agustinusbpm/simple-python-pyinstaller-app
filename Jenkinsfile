@@ -44,8 +44,8 @@ node {
             // Deploy Di AWS EC2
             sshagent(['ec2-key']) {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker rmi bagaspm12/submission-python-app'  
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'  
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker rmi bagaspm12/submission-python-app:latest'  
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app:latest'  
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app'
             }
         }
