@@ -5,14 +5,14 @@ node {
             sh 'python -m py_compile sources/add2vals.py sources/calc.py'
             stash(name: 'compiled-results', includes: 'sources/*.py*')
         }
-    //     // Build Docker Image Untuk Deploy Di AWS
-    //     withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-    //         unstash(name: 'compiled-results')
-    //         docker.build('bagaspm12/submission-python-app:latest', '.')
-    //         // Push Ke Docker Hub
-    //         sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-    //         sh 'docker push bagaspm12/submission-python-app:latest' 
-    //     }    
+        // Build Docker Image Untuk Deploy Di AWS
+        withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+            unstash(name: 'compiled-results')
+            docker.build('bagaspm12/submission-python-app:latest', '.')
+            // Push Ke Docker Hub
+            sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+            sh 'docker push bagaspm12/submission-python-app:latest' 
+        }    
     }
     // stage('Test') {
     //     docker.image('qnib/pytest').inside {
@@ -46,7 +46,7 @@ node {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 mkdir -p /home/ubuntu/submission-python-app/' + env.BUILD_ID + ''                 
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker pull bagaspm12/submission-python-app'
                 // sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm -v /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/:/src/dist bagaspm12/submission-python-app 'pyinstaller -F add2vals.py''     
-                ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app "pyinstaller -F add2vals.py"
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@54.179.63.68 docker run --rm bagaspm12/submission-python-app'
             }
         }
         catch(Exception e) {
