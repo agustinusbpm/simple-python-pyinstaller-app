@@ -57,7 +57,7 @@ node {
                 archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
                 // Menjalankan Aplikasi Di AWS EC2
                 sshagent(['ec2-key']) {  
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 chmod a+x /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/add2vals'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 sudo chmod a+x /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/add2vals'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@18.140.5.87 /home/ubuntu/submission-python-app/' + env.BUILD_ID + '/add2vals 20 7'
                 }
                 // Delay Selama 1 Menit
